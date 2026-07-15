@@ -17,7 +17,7 @@
 - 输出文件大小和 SHA256
 - 最终只回复保存路径和 Markdown 图片预览
 
-在 Windows 上，本 skill 默认优先使用内置 PowerShell 脚本保存结果，不需要用户电脑预装 Python。Python 脚本保留为跨平台备用方案。
+在 Windows 上，本 skill 默认优先使用内置 PowerShell 脚本保存结果，不需要用户电脑预装 Python。PowerShell 脚本会用共享读取方式读取 rollout JSONL，并在日志短暂被占用时自动重试。Python 脚本保留为跨平台备用方案。
 
 它禁止把旧图、截图、下载图、缓存猜测图、占位图当成本轮结果交付。
 

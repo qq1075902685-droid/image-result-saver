@@ -3,7 +3,9 @@ param(
   [string]$OutDir = "",
   [string]$Prefix = "generated-image",
   [string]$Rollout = "",
-  [string]$SessionsRoot = ""
+  [string]$SessionsRoot = "",
+  [int]$RetryCount = 20,
+  [int]$RetryDelayMs = 250
 )
 
 $ErrorActionPreference = "Stop"
@@ -293,20 +295,48 @@ function Read-PngInfo {
 function Get-LatestImageResults {
   param([string]$RolloutPath)
   $latestResults = @()
-  foreach ($line in [System.IO.File]::ReadLines($RolloutPath, [System.Text.Encoding]::UTF8)) {
-    if ([string]::IsNullOrWhiteSpace($line)) {
-      continue
-    }
+
+  for ($attempt = 1; $attempt -le $RetryCount; $attempt++) {
+    $stream = $null
+    $reader = $null
     try {
-      $obj = $line | ConvertFrom-Json
-    } catch {
-      continue
-    }
-    $results = @(Get-ImageCallResults $obj)
-    if ($results.Count -gt 0) {
-      $latestResults = $results
+      $stream = [System.IO.FileStream]::new(
+        $RolloutPath,
+        [System.IO.FileMode]::Open,
+        [System.IO.FileAccess]::Read,
+        ([System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete)
+      )
+      $reader = [System.IO.StreamReader]::new($stream, [System.Text.Encoding]::UTF8, $true)
+      while (-not $reader.EndOfStream) {
+        $line = $reader.ReadLine()
+        if ([string]::IsNullOrWhiteSpace($line)) {
+          continue
+        }
+        try {
+          $obj = $line | ConvertFrom-Json
+        } catch {
+          continue
+        }
+        $results = @(Get-ImageCallResults $obj)
+        if ($results.Count -gt 0) {
+          $latestResults = $results
+        }
+      }
+      break
+    } catch [System.IO.IOException] {
+      if ($attempt -ge $RetryCount) {
+        throw
+      }
+      Start-Sleep -Milliseconds $RetryDelayMs
+    } finally {
+      if ($null -ne $reader) {
+        $reader.Dispose()
+      } elseif ($null -ne $stream) {
+        $stream.Dispose()
+      }
     }
   }
+
   if ($latestResults.Count -eq 0) {
     throw "No image_generation_call.result found in $RolloutPath"
   }

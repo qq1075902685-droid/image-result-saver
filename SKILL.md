@@ -10,7 +10,7 @@ description: Companion delivery workflow for any task that uses, may use, or has
 When the user asks for image generation or image editing output, or when the task triggers `image_gen` / `imagegen` for any reason, produce a real saved file, not only a chat preview.
 
 1. Use the built-in `image_gen` tool or the system `imagegen` skill first when available.
-2. After image generation completes, run the saver script from this skill. On Windows, prefer `scripts/save_latest_image_result.ps1` so computers without Python can still save images. On macOS/Linux, or when PowerShell is unavailable, use `scripts/save_latest_image_result.py`.
+2. After image generation completes, run the saver script from this skill. On Windows, prefer `scripts/save_latest_image_result.ps1` so computers without Python can still save images. The PowerShell script uses shared reads and retries when the rollout JSONL is briefly locked. On macOS/Linux, or when PowerShell is unavailable, use `scripts/save_latest_image_result.py`.
 3. Save decoded PNG files into the current project's `outputs` directory unless the user explicitly requested another output directory.
 4. Verify every saved file:
    - PNG signature
