@@ -1,0 +1,7 @@
+interface:
+  display_name: "Image Result Saver"
+  short_description: "Save generated images from Codex rollout results."
+  default_prompt: "Use $image-result-saver to generate an image and save the verified PNG to outputs."
+
+policy:
+  allow_implicit_invocation: true
