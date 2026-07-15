@@ -15,7 +15,7 @@
 - 校验 IHDR 宽高
 - 校验本地 PNG 可读性
 - 输出文件大小和 SHA256
-- 最终只回复保存路径和 Markdown 图片预览
+- 最终只回复可点击的文件名链接和 Markdown 图片预览
 
 在 Windows 上，本 skill 默认优先使用内置 PowerShell 脚本保存结果，不需要用户电脑预装 Python。PowerShell 脚本会用共享读取方式读取 rollout JSONL，并在日志短暂被占用时自动重试。Python 脚本保留为跨平台备用方案。
 
@@ -56,7 +56,7 @@ https://github.com/qq1075902685-droid/image-result-saver
 如果想强制提醒 Codex 使用它，可以这样说：
 
 ```text
-生成图片后，请使用 $image-result-saver 保存本轮结果到 outputs，并只回复保存路径和 Markdown 预览。
+生成图片后，请使用 $image-result-saver 保存本轮结果到 outputs，并只回复可点击的文件名链接和 Markdown 预览。
 ```
 
 ## 预期最终回复
@@ -64,12 +64,12 @@ https://github.com/qq1075902685-droid/image-result-saver
 单张图片：
 
 ```markdown
-保存路径：C:\path\to\project\outputs\generated-image.png
+保存文件：[generated-image.png](C:\path\to\project\outputs\generated-image.png)
 
 ![generated image](C:\path\to\project\outputs\generated-image.png)
 ```
 
-多张图片时，重复输出每张图的保存路径和预览即可。
+多张图片时，重复输出每张图的可点击文件名链接和预览即可。
 
 ## 手动运行脚本
 

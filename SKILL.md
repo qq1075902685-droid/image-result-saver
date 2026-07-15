@@ -19,7 +19,7 @@ When the user asks for image generation or image editing output, or when the tas
    - file size
    - SHA256
 5. Final reply must contain only:
-   - the saved path for each image
+   - a clickable Markdown file link for each saved image, using the filename as the link label
    - a Markdown image preview for each image
 
 Do not use old images, screenshots, downloaded images, placeholders, cache guesses, or any file that is not decoded from this turn's latest `image_generation_call.result`.
@@ -48,7 +48,7 @@ Use a descriptive `--prefix` when the user requested a specific subject, for exa
 python <skill_dir>/scripts/save_latest_image_result.py --cwd . --prefix tv-stand-scene
 ```
 
-The script prints JSON containing saved paths and validation metadata. Use only paths reported by the script.
+The script prints JSON containing saved paths and validation metadata. Use only paths reported by the script. Convert each saved path into a clickable Markdown link in the final response; do not leave it as plain text only.
 
 If the script reports that it cannot find the rollout JSONL or cannot find a PNG result, say plainly that the current environment did not expose a recoverable image result. Do not invent a path.
 
@@ -57,9 +57,9 @@ If the script reports that it cannot find the rollout JSONL or cannot find a PNG
 For one image:
 
 ```markdown
-Saved path: C:\path\to\project\outputs\generated-image-1.png
+Saved file: [generated-image-1.png](C:\path\to\project\outputs\generated-image-1.png)
 
 ![generated image](C:\path\to\project\outputs\generated-image-1.png)
 ```
 
-For multiple images, repeat the two lines for each file. Do not include validation logs in the final response unless the user asks for them.
+For multiple images, repeat the clickable file link and preview for each file. Do not include validation logs in the final response unless the user asks for them.
