@@ -30,32 +30,6 @@ https://github.com/qq1075902685-droid/image-result-saver
 
 安装完成后，重启 Codex 或打开一个新任务，让 skill 元数据重新加载。
 
-## 为什么推荐用 skill-installer
-
-`$skill-installer` 会把仓库安装到 Codex 的 skills 目录，并自动处理不同电脑上的环境差异。
-
-有些电脑没有 `git` 命令，这时安装器可能会改用 GitHub 压缩包下载。这样安装出来的 skill 目录里没有 `.git` 元数据，这是正常现象，不影响 skill 使用。
-
-区别只是：
-
-- 有 `.git`：以后可以在目录里执行 `git pull` 更新
-- 没有 `.git`：skill 仍然能正常使用，但更新时需要重新下载安装或让 Codex 帮你覆盖安装
-
-## 更新到最新版
-
-在 Codex 里发送：
-
-```text
-Use $skill-installer to update or reinstall this skill:
-https://github.com/qq1075902685-droid/image-result-saver
-
-如果本地已经安装 image-result-saver：
-1. 如果目录里有 .git，请进入该目录执行 git pull。
-2. 如果目录里没有 .git，说明之前可能是压缩包安装，请重新下载最新版并覆盖安装。
-3. 更新后检查 SKILL.md、agents/openai.yaml、scripts/save_latest_image_result.py 是否存在。
-4. 提醒我重启 Codex 或打开新任务。
-```
-
 ## 触发范围
 
 这个 skill 设计成 `image_gen` / `imagegen` 的伴随交付流程。以下任务都应该触发：
