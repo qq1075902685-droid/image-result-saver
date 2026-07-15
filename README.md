@@ -17,6 +17,8 @@
 - 输出文件大小和 SHA256
 - 最终只回复保存路径和 Markdown 图片预览
 
+在 Windows 上，本 skill 默认优先使用内置 PowerShell 脚本保存结果，不需要用户电脑预装 Python。Python 脚本保留为跨平台备用方案。
+
 它禁止把旧图、截图、下载图、缓存猜测图、占位图当成本轮结果交付。
 
 ## 快速安装
@@ -72,6 +74,14 @@ https://github.com/qq1075902685-droid/image-result-saver
 ## 手动运行脚本
 
 一般不需要手动运行。只有在调试时，才需要从当前 Codex 项目目录运行：
+
+Windows 默认推荐：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File <skill_dir>/scripts/save_latest_image_result.ps1 -Cwd . -Prefix generated-image
+```
+
+Python 备用：
 
 ```bash
 python <skill_dir>/scripts/save_latest_image_result.py --cwd . --prefix generated-image
